@@ -59,6 +59,24 @@ def getNumPos(user):
             if word.lower() in posWords:
                 score += 1
     
-    print(str(score) + " positive words used!")
-
+    print(str(score) + " positive words in " + str(searchSize) + " previous tweets!")
+    rateScore(score);
+    
+def rateScore(score):
+    positivity = score - searchSize
+    
+    if positivity < -15:
+        print("Uh oh, this user is not very positive!")
+    if positivity >= -15 and positivity < -7:
+        print("This user looks very neutral.")
+    if positivity >= -7 and positivity < 15:
+        print("This user gives off some good vibes")
+    if positivity >= 15 and positivity < 30:
+        print("This user has lots of positive energy!")
+    if positivity >= 30 and positivity < 45:
+        print("This user is incredibly positive!")
+    if positivity >= 45:
+        print("WOW, this user is amazing!")
+    
+    
 main()
