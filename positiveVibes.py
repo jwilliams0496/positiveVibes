@@ -1,11 +1,17 @@
 from twython import Twython
 
-username = "JonTronShow"
-serachSize = 100
+searchSize = 20
 
+def main():
+    user = input("Type the username of any Twitter user: ")
+    getNumPos(user)
+
+# open the file of all positive words, and return a list of them
 def getCompareWords():
-    pass
-
+    file = open("positiveWords.txt", "r")
+    return file.read().split();
+    
+# Let's not push my API keys to github lol
 def getKeys():
     file = open("APIKeys.txt" , "r")
     
@@ -23,7 +29,9 @@ def getKeys():
     
     return accessToken, accessTokenSecret, consumerKey, consumerSecret
 
-def main():
+def getNumPos(user):
+    username = user;
+    
     accessToken = getKeys()[0]
     accessTokenSecret = getKeys()[1]
     consumerKey = getKeys()[2]
@@ -37,15 +45,20 @@ def main():
     print("Access token granted\n")
     
     twitter = Twython(consumerKey, access_token=ACCESS_TOKEN)
-    userTimeline = twitter.get_user_timeline(screen_name = username)
+    userTimeline = twitter.get_user_timeline(screen_name = username, count = searchSize)
         
+    posWords = getCompareWords();
+    score = 0;
+
     print("\n\nTweets from ", username, "\n\n")
         
     # And print the tweets for that user.
     for tweet in userTimeline:
-        print(tweet['text'] + "\n\n")
-        
-        for word in tweet['tweet']:
-            pass
+        print(tweet['text'] + "\n")
+        for i, word in enumerate(tweet['text'].split()):
+            if word.lower() in posWords:
+                score += 1
     
+    print(str(score) + " positive words used!")
+
 main()
